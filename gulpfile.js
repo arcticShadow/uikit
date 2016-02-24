@@ -16,6 +16,7 @@ var pkg         = require('./package.json'),
     uglify      = require('gulp-uglify'),
     watch       = require('gulp-watch'),
     tap         = require('gulp-tap'),
+    umd         = require('gulp-umd'),
     zip         = require('gulp-zip'),
     runSequence = require('run-sequence'),
     browserSync = require('browser-sync'),
@@ -213,7 +214,12 @@ gulp.task('dist-clean', function(done) {
 });
 
 gulp.task('dist-core-move', ['dist-clean'], function() {
-    return gulp.src(['./src/**']).pipe(gulp.dest('./dist'));
+
+    return gulp.src(['./src/**', '!./src/**/*.js' ]).pipe(gulp.dest('./dist')).on('end', function(){
+      return gulp.src(['./src/**/*.js' ])
+        .pipe(umd())
+        .pipe(gulp.dest('./dist'));
+    });
 });
 
 gulp.task('dist-core-minify', function(done) {

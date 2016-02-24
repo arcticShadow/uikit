@@ -1,45 +1,8 @@
-(function(core) {
-
-    if (typeof define == "function" && define.amd) { // AMD
-
-        define("uikit", function(){
-
-            var uikit = window.UIkit || core(window, window.jQuery, window.document);
-
-            uikit.load = function(res, req, onload, config) {
-
-                var resources = res.split(','), load = [], i, base = (config.config && config.config.uikit && config.config.uikit.base ? config.config.uikit.base : "").replace(/\/+$/g, "");
-
-                if (!base) {
-                    throw new Error( "Please define base path to UIkit in the requirejs config." );
-                }
-
-                for (i = 0; i < resources.length; i += 1) {
-                    var resource = resources[i].replace(/\./g, '/');
-                    load.push(base+'/components/'+resource);
-                }
-
-                req(load, function() {
-                    onload(uikit);
-                });
-            };
-
-            return uikit;
-        });
-    }
-
-    if (!window.jQuery) {
-        throw new Error( "UIkit requires jQuery" );
-    }
-
-    if (window && window.jQuery) {
-        core(window, window.jQuery, window.document);
-    }
-
-
-})(function(global, $, doc) {
-
-    "use strict";
+function Core() {
+    // These are sucked off the wrapping
+    var global = window;
+    var $ = jQuery;
+    var doc = window.document;
 
     var UI = {}, _UI = global.UIkit ? Object.create(global.UIkit) : undefined;
 
@@ -746,4 +709,4 @@
     }
 
     return UI;
-});
+}

@@ -1,6 +1,8 @@
-(function(UI) {
-
+function Button() {
     "use strict";
+
+    // These are sucked off the wrapping
+    var UI = Core;
 
     UI.component('buttonRadio', {
 
@@ -152,5 +154,4 @@
         }
     });
 
-})(UIkit);
-
+};
