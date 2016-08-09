@@ -215,9 +215,85 @@ gulp.task('dist-clean', function(done) {
 
 gulp.task('dist-core-move', ['dist-clean'], function() {
 
-    return gulp.src(['./src/**', '!./src/**/*.js' ]).pipe(gulp.dest('./dist')).on('end', function(){
+  /**
+  Module Lists
+  **/
+  // 'accordion': ['uikit/dist/js/core/core'],
+  // 'autocomplete': ['uikit/dist/js/core/core'],
+  // 'datepicker': ['uikit/dist/js/core/core'],
+  // 'form-password': ['uikit/dist/js/core/core'],
+  // 'form-select': ['uikit/dist/js/core/core'],
+  // 'grid-parallax': ['uikit/dist/js/core/core'],
+  // 'grid': ['uikit/dist/js/core/core'],
+  // 'htmleditor': ['uikit/dist/js/core/core'],
+  // 'lightbox': ['uikit/dist/js/core/core'],
+  // 'nestable': ['uikit/dist/js/core/core'],
+  // 'notify': ['uikit/dist/js/core/core'],
+  // 'pagination': ['uikit/dist/js/core/core'],
+  // 'parallax': ['uikit/dist/js/core/core'],
+  // 'search': ['uikit/dist/js/core/core'],
+  // 'slider': ['uikit/dist/js/core/core'],
+  // 'slideset': ['uikit/dist/js/core/core'],
+  // 'slideshow-fx': ['uikit/dist/js/core/core'],
+  // 'slideshow': ['uikit/dist/js/core/core'],
+  // 'sortable': ['uikit/dist/js/core/core'],
+  // 'sticky': ['uikit/dist/js/core/core'],
+  // 'timepicker': ['uikit/dist/js/core/core'],
+  // 'tooltip': ['uikit/dist/js/core/core'],
+  // 'upload': ['uikit/dist/js/core/core'],
+
+  var makeUIkitDep = function(name){
+    return {
+      name: name,
+      amd: 'uikit-core!' + name,
+      cjs: './' + name,
+      global: 'UIkit',
+      param: 'UI'
+    }
+  }
+
+  var uikitCoreDependency = {
+    name: 'core',
+    amd:  'core',
+    cjs: './' + 'core',
+
+    param: 'UI'
+  }
+  var moduleDeps = {
+
+    'core': [
+      {
+        name: 'jquery',
+        param: '$',
+        global: 'UIkit',
+      },
+    ],
+    'alert': [uikitCoreDependency],
+    'button': [uikitCoreDependency],
+    'cover': [uikitCoreDependency],
+    'dropdown': [uikitCoreDependency],
+    'grid': [uikitCoreDependency],
+    'modal': [uikitCoreDependency],
+    'nav': [uikitCoreDependency],
+    'offcanvas': [uikitCoreDependency],
+    'scrollspy': [uikitCoreDependency],
+    'smooth-scroll': [uikitCoreDependency],
+    'switcher': [uikitCoreDependency],
+    'tab': [uikitCoreDependency],
+    'toggle': [uikitCoreDependency],
+    'touch': [uikitCoreDependency],
+    'utility': [uikitCoreDependency]
+  }
+
+
+  return gulp.src(['./src/**', '!./src/**/*.js' ]).pipe(gulp.dest('./dist')).on('end', function(){
       return gulp.src(['./src/**/*.js' ])
-        .pipe(umd())
+        .pipe(umd({
+          dependencies: function(file) {
+
+            return moduleDeps[path.basename(file.path, '.js')]||[];
+          }
+        }))
         .pipe(gulp.dest('./dist'));
     });
 });
@@ -494,11 +570,11 @@ gulp.task('dist-themes-core', ['dist-themes'], function(done) {
         }));
     });
 
-    Promise.all(promises).then(function(){
-        gulp.src(corejs).pipe(concat('uikit.js')).pipe(gulp.dest('./dist/js')).on('end', function(){
-            done();
-        });
-    });
+    // Promise.all(promises).then(function(){
+    //     gulp.src(corejs).pipe(concat('uikit.js')).pipe(gulp.dest('./dist/js')).on('end', function(){
+    //         done();
+    //     });
+    // });
 });
 
 /*

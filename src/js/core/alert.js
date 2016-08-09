@@ -1,8 +1,5 @@
-function Alert(){
+var Alert = function(){
     "use strict";
-
-    // These are sucked off the wrapping
-    var UI = Core;
 
     UI.component('alert', {
 
@@ -63,4 +60,4 @@ function Alert(){
         }
 
     });
-}
+}();
